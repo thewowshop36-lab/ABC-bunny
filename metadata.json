@@ -1,0 +1,6 @@
+{
+  "name": "ABC Bunny",
+  "description": "Vibrant, child-friendly educational mobile game with letter tracing, cheerful phonics voiceovers, balloon popping, alphabet puzzles, pet feeding rewards, and parent lock.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
