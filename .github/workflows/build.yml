@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android App Bundle
 
 on:
   push:
@@ -20,7 +20,6 @@ jobs:
 
     - name: Setup Android SDK and Gradle
       run: |
-        # Download Android Command Line Tools
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdtools.zip
         mkdir -p $HOME/android-sdk/cmdline-tools
         unzip -q cmdtools.zip -d $HOME/android-sdk/cmdline-tools
@@ -44,16 +43,15 @@ jobs:
         mkdir -p app
         keytool -genkey -v -keystore app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
         cp app/debug.keystore debug.keystore
-        ls -la app/
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
+    - name: Build Debug App Bundle (AAB)
+      run: ./gradlew bundleDebug
 
-    - name: Upload APK Artifact
+    - name: Upload AAB Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: app-debug-aab
+        path: app/build/outputs/bundle/debug/app-debug.aab
