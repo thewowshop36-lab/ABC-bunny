@@ -20,20 +20,20 @@ jobs:
 
     - name: Setup Android SDK and Gradle
       run: |
-        wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdtools.zip
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076706_latest.zip -O cmdtools.zip
         mkdir -p $HOME/android-sdk/cmdline-tools
         unzip -q cmdtools.zip -d $HOME/android-sdk/cmdline-tools
         mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
-        
+
         echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
         echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
         echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
         echo "$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
-        
+
         export ANDROID_SDK_ROOT=$HOME/android-sdk
         export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools
         yes | sdkmanager --licenses
-        sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+        sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
     - name: Generate Modern Gradle Wrapper
       run: gradle wrapper --gradle-version 9.3.1
@@ -47,11 +47,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build Debug App Bundle (AAB)
-      run: ./gradlew bundleDebug
+    - name: Build Release App Bundle (AAB)
+      run: ./gradlew bundleRelease
 
     - name: Upload AAB Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug-aab
-        path: app/build/outputs/bundle/debug/app-debug.aab
+        name: app-release-aab
+        path: app/build/outputs/bundle/release/app-release.aab
